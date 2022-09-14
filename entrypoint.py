@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
 # use of https://python-jenkins.readthedocs.io/en/latest/index.html
-
-import sys
-import requests
-import jenkins
-import time
 import json
+import sys
+import time
+
+import jenkins
+import requests
 
 
 def mandatory_arg(argv):
