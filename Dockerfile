@@ -2,12 +2,16 @@
 FROM python:3.8
 
 #install pre-requisites
-RUN apt-get update
+RUN apt-get update \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --upgrade pip
+
+RUN pip install --no-cache-dir --upgrade pip==22.2.2
 
 # Copies your code file from your action repository to the filesystem path `/` of the container
 COPY entrypoint.py /entrypoint.py
+
 COPY requirements.txt /requirements.txt
 
 RUN chmod +x /entrypoint.py
