@@ -18,7 +18,7 @@ RUN chmod +x /entrypoint.py
 
 WORKDIR /
 
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Code file to execute when the docker container starts up (`entrypoint.py`)
 ENTRYPOINT ["/entrypoint.py"]
