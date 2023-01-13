@@ -22,13 +22,13 @@ outputs:
     description: 'Build status'
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'docker://ghcr.io/calance-us/build-jenkins-job-image:v0.0.0-rc0'
   args:
-    - ${{ inputs.jenkins-url}}
-    - ${{ inputs.jenkins-token}}
-    - ${{ inputs.user}}
-    - ${{ inputs.job-path }}
-    - ${{ inputs.job-params}}
+  - ${{ inputs.jenkins-url}}
+  - ${{ inputs.jenkins-token}}
+  - ${{ inputs.user}}
+  - ${{ inputs.job-path }}
+  - ${{ inputs.job-params}}
 branding:
   icon: 'arrow-right-circle'
   color: 'blue'
