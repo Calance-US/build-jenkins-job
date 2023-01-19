@@ -22,7 +22,7 @@ outputs:
     description: 'Build status'
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/calance-us/build-jenkins-job-image:v1.0.0'
+  image: 'docker://ghcr.io/calance-us/build-jenkins-job-image:1.0.0'
   args:
   - ${{ inputs.jenkins-url}}
   - ${{ inputs.jenkins-token}}
