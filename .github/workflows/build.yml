@@ -1,0 +1,18 @@
+name: Calance generic CI-CD
+on:
+  push:
+    tags:
+    - v[0-9]+.[0-9]+.[0-9]+
+  workflow_dispatch:
+
+
+jobs:
+  build-and-push-dockerimages:
+    secrets:
+      GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+      REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}
+    uses: Calance-US/calance-workflows/.github/workflows/build.yml@main
+    with:
+      image_name: build-jenkins-job-image
+
+
