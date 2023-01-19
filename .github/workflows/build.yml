@@ -13,6 +13,6 @@ jobs:
       REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}
     uses: Calance-US/calance-workflows/.github/workflows/build.yml@main
     with:
-      image_name: build-jenkins-job-image
+      image_name: build-jenkins-job
 
 
