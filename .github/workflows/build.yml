@@ -11,7 +11,7 @@ jobs:
     secrets:
       GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
       REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}
-    uses: Calance-US/calance-workflows/.github/workflows/build.yml@main
+    uses: Calance-US/calance-workflows/.github/workflows/build.yml@v1.0.0
     with:
       image_name: build-jenkins-job
 
