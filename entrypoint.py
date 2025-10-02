@@ -6,7 +6,6 @@ import sys
 import time
 
 import jenkins
-import requests
 
 
 def mandatory_arg(argv):
@@ -36,7 +35,9 @@ print(f"Hello {user['fullName']} from Jenkins {version}")
 
 split = JOB_PATH.split("job/")
 job_name = "".join(split)
-queue_id = server.build_job(job_name, parameters=json.loads(JOB_PARAMS), token=JENKINS_TOKEN)
+queue_id = server.build_job(
+    job_name, parameters=json.loads(JOB_PARAMS), token=JENKINS_TOKEN
+)
 
 max_queue_polls = 30
 poll_count = 0
@@ -44,8 +45,8 @@ build_number = None
 
 while build_number is None and poll_count < max_queue_polls:
     queue_item = server.get_queue_item(queue_id)
-    if 'executable' in queue_item:
-        build_number = queue_item['executable']['number']
+    if "executable" in queue_item:
+        build_number = queue_item["executable"]["number"]
         print(f"Build started: #{build_number}")
         break
     time.sleep(3)
@@ -58,11 +59,11 @@ if build_number is None:
 status = None
 while status is None:
     build_info = server.get_build_info(job_name, build_number)
-    if build_info['building']:
+    if build_info["building"]:
         print("Build still running...")
-        time.sleep(3)
+        time.sleep(5)
     else:
-        status = build_info['result']
+        status = build_info["result"]
 
 print(f"Job finished with status: {status}")
 print(f"::set-output name=job_status::{status}")
