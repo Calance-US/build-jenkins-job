@@ -9,8 +9,7 @@ on:
 jobs:
   build-and-push-dockerimages:
     secrets:
-      GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
-      REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}
+      IMAGE_REGISTRY_PASSWORD : ${{ secrets.GHCR_TOKEN }}
     uses: Calance-US/calance-workflows/.github/workflows/build.yml@v3.0.1
     with:
       image_name: Calance-US/build-jenkins-job
