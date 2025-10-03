@@ -21,8 +21,7 @@ outputs:
   job_status:
     description: 'Build status'
 runs:
-
-  using: 'ghcr'
+  using: 'docker'
   image: 'docker://ghcr.io/Calance-US/build-jenkins-job:1.0.5'
   args:
   - ${{ inputs.jenkins-url}}
