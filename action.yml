@@ -23,7 +23,7 @@ outputs:
 runs:
 
   using: 'ghcr'
-  image: 'ghcr.io://Calance-US/build-jenkins-job:1.0.5'
+  image: 'docker://ghcr.io/Calance-US/build-jenkins-job:1.0.5'
   args:
   - ${{ inputs.jenkins-url}}
   - ${{ inputs.jenkins-token}}
