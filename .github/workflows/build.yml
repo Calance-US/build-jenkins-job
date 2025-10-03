@@ -14,6 +14,8 @@ jobs:
     uses: Calance-US/calance-workflows/.github/workflows/build.yml@v3.0.1
     with:
       image_name: Calance-US/build-jenkins-job
+      image_registry: ghcr.io
+      image_registry_username: Calance-US
       
 
 
