@@ -6,7 +6,6 @@ import sys
 import time
 
 import jenkins
-import requests
 
 
 def mandatory_arg(argv):
@@ -34,38 +33,43 @@ user = server.get_whoami()
 version = server.get_version()
 print(f"Hello {user['fullName']} from Jenkins {version}")
 
-# build job
 split = JOB_PATH.split("job/")
 job_name = "".join(split)
-server.build_job(job_name, parameters=json.loads(JOB_PARAMS), token=JENKINS_TOKEN)
-queue_info = server.get_queue_info()
-queue_id = queue_info[0].get("id")
+queue_id = server.build_job(
+    job_name, parameters=json.loads(JOB_PARAMS), token=JENKINS_TOKEN
+)
 
-# define url to request build_number
-url = f"http://{JENKINS_USER}:{JENKINS_TOKEN}@{JENKINS_URL}/queue/item/{queue_id}/api/json?pretty=true"
+max_queue_polls = 30
+poll_count = 0
+build_number = None
 
-
-def get_trigger_info(url: str):
-    trigger_info = requests.get(url).json()
-    return trigger_info
-
-
-while "executable" not in (info := get_trigger_info(url)):
+while build_number is None and poll_count < max_queue_polls:
+    queue_item = server.get_queue_item(queue_id)
+    if "executable" in queue_item:
+        build_number = queue_item["executable"]["number"]
+        print(f"Build started: #{build_number}")
+        break
     time.sleep(3)
-build_number = info["executable"]["number"]
-print(f"BUILD NUMBER: {build_number}")
+    poll_count += 1
 
+if build_number is None:
+    print(
+        f"ERROR: Max queue polls ({max_queue_polls}) reached — build has not started yet."
+    )
+    print(f"DEBUG: You can check the Jenkins pipeline here: {JENKINS_URL}/{JOB_PATH}")
+    sys.exit(1)
 
-def get_status(name: str, number: int) -> str:
-    build_info = server.get_build_info(name=name, number=number)
-    job_status = build_info["result"]
-    return job_status
+status = None
+while status is None:
+    build_info = server.get_build_info(job_name, build_number)
+    if build_info["building"]:
+        print("Build still running...")
+        time.sleep(5)
+    else:
+        status = build_info["result"]
 
-
-while not (status := get_status(job_name, build_number)):
-    time.sleep(1)
-print(f"Job status is : {status}")
+print(f"Job finished with status: {status}")
 print(f"::set-output name=job_status::{status}")
 
 if status != "SUCCESS":
-    exit(1)
+    sys.exit(1)
