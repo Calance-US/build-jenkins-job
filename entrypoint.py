@@ -53,7 +53,10 @@ while build_number is None and poll_count < max_queue_polls:
     poll_count += 1
 
 if build_number is None:
-    print("ERROR: Build never started. Exiting.")
+    print(
+        f"ERROR: Max queue polls ({max_queue_polls}) reached — build has not started yet."
+    )
+    print(f"DEBUG: You can check the Jenkins pipeline here: {JENKINS_URL}/{JOB_PATH}")
     sys.exit(1)
 
 status = None
